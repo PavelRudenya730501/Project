@@ -24,7 +24,9 @@ private:
     QString pendingMultiplicativeOperator;
     bool waitingForOperand;
     bool pressedmmb, pressedsmb, presseddmb, pressedmtrb, pressedkmtrb;
-
+    bool pressedyrdb, pressedftsb, pressedmlsb;
+    bool pressedmgrb, pressedgrb, pressedkgrb, pressedcntb, pressedtnb;
+    bool pressedfuntb;
     void fmmtrs();
     void fsmtrs();
     void fdmtrs();
@@ -46,8 +48,6 @@ private slots:
     void digits_numbers();
 
     void on_actionExit_triggered();
-    void on_actionStage_2_trigonometry_triggered();
-    void on_actionStage_1_standart_triggered();
     void on_actionShow_choosing_bars_triggered();
     void on_actionHide_choosing_bars_triggered();
 
@@ -65,6 +65,28 @@ private slots:
     void on_decimeters_clicked();
     void on_kilometers_clicked();
     void on_meters_clicked();
+    void on_actionStage_1_standart_2_triggered();
+    void on_actionStage_2_trigonometry_2_triggered();
+    void on_actionStage_4_money_converter_triggered();
+    void on_yard_bar_clicked();
+    void on_mile_bar_clicked();
+    void on_fut_bar_clicked();
+    void on_yards_clicked();
+    void on_miles_clicked();
+    void on_futs_clicked();
+    void on_mgr_bar_clicked();
+    void on_gr_bar_clicked();
+    void on_kg_bar_clicked();
+    void on_cnt_bar_clicked();
+    void on_ton_bar_clicked();
+    void on_funts_bar_clicked();
+    void on_miligram_clicked();
+    void on_gram_clicked();
+    void on_kilogram_clicked();
+    void on_centner_clicked();
+    void on_tona_clicked();
+    void on_funts_clicked();
+    void on_backspace_clicked();
 };
 
 #endif // CONVERTER_H
