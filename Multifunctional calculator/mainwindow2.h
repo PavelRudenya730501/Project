@@ -17,9 +17,8 @@ public:
 
 private:
     Ui::MainWindow2 *ui;
-    double sumSoFar;
-    double sumInMemory;
-    double factorSoFar;
+    double sumSoFar, sumInMemory, factorSoFar;
+    double num_f;
     QString pendingAdditiveOperator;
     QString pendingMultiplicativeOperator;
     bool waitingForOperand;
@@ -29,11 +28,8 @@ private:
 private slots:
 
     void on_actionExit_triggered();
-    void on_actionStage1_triggered();
     void on_actionShow_additive_bars_triggered();
     void on_actionHide_additive_bars_triggered();
-    void on_actionStage_3_converter_triggered();
-
     void digits_numbers();
     void fsin();
     void fcos();
@@ -44,6 +40,7 @@ private slots:
     void fAtan();
     void degre();
     void degre2();
+    void math_op();
 
     void clearMemory();
     void readMemory();
@@ -59,6 +56,11 @@ private slots:
     void on_equal_clicked();
 
     void on_back_clicked();
+    void on_actionStage_1_standart_triggered();
+    void on_actionStage_4_money_converter_triggered();
+    void on_actionFull_screen_triggered();
+    void on_actionStandart_screen_triggered();
+    void on_actionMode_3_converter_triggered();
 };
 
 #endif // MAINWINDOW2_H
