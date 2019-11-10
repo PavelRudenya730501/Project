@@ -4,6 +4,7 @@
 #include "iostream"
 #include "converter.h"
 #include "mainwindow.h"
+#include "moneyconverter.h"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(digits_numbers()));
     connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(digits_numbers()));
     connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(digits_numbers()));
+
     connect(ui->pi, SIGNAL(clicked()), this, SLOT(digits_numbers()));
 
     connect(ui->sin, SIGNAL(clicked()), this, SLOT(fsin()));
@@ -36,8 +38,13 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(ui->Asin, SIGNAL(clicked()), this, SLOT(fAsin()));
     connect(ui->Acos, SIGNAL(clicked()), this, SLOT(fAcos()));
     connect(ui->Atan, SIGNAL(clicked()), this, SLOT(fAtan()));
+
     connect(ui->degrees, SIGNAL(clicked()), this, SLOT(degre()));
     connect(ui->degrees_2, SIGNAL(clicked()), this, SLOT(degre2()));
+    connect(ui->back, SIGNAL(clicked()), this, SLOT(on_back_clicked()));
+
+    ui->statusBar->showMessage("S&C calculator: mode 2 (trigonometry)");
+
     //connect(ui->Actg, SIGNAL(clicked()), this, SLOT(fActg()));
 }
 
@@ -46,15 +53,61 @@ MainWindow2::~MainWindow2()
     delete ui;
 }
 
+void MainWindow2::on_actionStage_1_standart_triggered()
+{
+    MainWindow *window = new MainWindow();
+    window->show();
+    this->close();
+}
+void MainWindow2::on_actionMode_3_converter_triggered()
+{
+    Converter *conv = new Converter();
+    conv->show();
+    this->close();
+}
+void MainWindow2::on_actionStage_4_money_converter_triggered()
+{
+    MoneyConverter *monc = new MoneyConverter();
+    monc->show();
+    this->close();
+}
+void MainWindow2::on_actionShow_additive_bars_triggered()
+{
+    ui->Asin->show();
+    ui->Actg->show();
+    ui->back->show();
+    ui->degrees_2->show();
+}
+void MainWindow2::on_actionHide_additive_bars_triggered()
+{
+    ui->Asin->hide();
+    ui->Actg->hide();
+    ui->back->hide();
+    ui->degrees_2->hide();
+}
+
 void MainWindow2::digits_numbers()
 {
     QPushButton *button = qobject_cast<QPushButton *>(sender());
     double all_numbers;
-    QString new_label;
+    QString new_lable;
+    if(ui->label->text().contains("." ) && button->text() == "0"){
+        new_lable = ui->label->text() + button->text();
+    } else{
+        all_numbers = (ui->label->text() + button->text()).toDouble();
+        new_lable = QString::number(all_numbers, 'g', 15);
+    }
 
-    all_numbers = (ui->label->text() + button->text()).toDouble();
-    new_label = QString::number(all_numbers, 'g', 15);
-    ui->label->setText(new_label);
+    ui->label->setText(new_lable);
+}
+
+void MainWindow2::math_op()
+{
+    QPushButton *button = qobject_cast<QPushButton *>(sender());
+
+    num_f = ui->label->text().toDouble();
+    ui->label->setText("");
+    button->setChecked(true);
 }
 
 void MainWindow2::fsin()
@@ -66,7 +119,6 @@ void MainWindow2::fsin()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::fcos()
 {
     double number;
@@ -76,7 +128,6 @@ void MainWindow2::fcos()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::ftan()
 {
     double number;
@@ -86,7 +137,6 @@ void MainWindow2::ftan()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::fctg()
 {
     double number;
@@ -96,7 +146,6 @@ void MainWindow2::fctg()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::fAsin()
 {
     double number;
@@ -106,7 +155,6 @@ void MainWindow2::fAsin()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::fAcos(){
     double number;
     QString new_label;
@@ -115,7 +163,6 @@ void MainWindow2::fAcos(){
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::fAtan()
 {
     double number;
@@ -125,7 +172,6 @@ void MainWindow2::fAtan()
     new_label = QString::number(number, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::degre()
 {
     double numb, pi = 3.14159265359;
@@ -135,7 +181,6 @@ void MainWindow2::degre()
     new_label = QString::number(numb, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::degre2()
 {
     double numb, pi = 3.14159265359;
@@ -145,7 +190,6 @@ void MainWindow2::degre2()
     new_label = QString::number(numb, 'g', 15);
     ui->label->setText(new_label);
 }
-
 void MainWindow2::on_mul_clicked()
 {
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
@@ -164,8 +208,9 @@ void MainWindow2::on_mul_clicked()
 
     pendingMultiplicativeOperator = clickedOperator;
     waitingForOperand = true;
-}
 
+    ui->mul->setChecked(true);
+}
 void MainWindow2::on_div_clicked()
 {
     QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
@@ -191,36 +236,19 @@ void MainWindow2::on_actionExit_triggered()
     QApplication::quit();
 }
 
-void MainWindow2::on_actionStage1_triggered()
-{
-    MainWindow *window = new MainWindow();
-    window->show();
-    this->close();
-}
-
 void MainWindow2::on_clear_clicked()
 {
-    ui->back->show();
-    //ui->label->clear();
-    ui->sin->setChecked(false);
-    ui->cos->setChecked(false);
-    ui->tg->setChecked(false);
-    ui->ctg->setChecked(false);
+    ui->div->setChecked(false);
+    ui->mul->setChecked(false);
 
     ui->label->setText("0");
+    waitingForOperand = true;
 }
 
 void MainWindow2::on_dot_clicked()
 {
     if(!(ui->label->text().contains('.')))
     ui->label->setText(ui->label->text()+".");
-}
-
-void MainWindow2::on_actionStage_3_converter_triggered()
-{
-    Converter *conv = new Converter();
-    conv->show();
-    this->close();
 }
 
 void MainWindow2::on_equal_clicked()
@@ -317,17 +345,12 @@ void MainWindow2::on_back_clicked()
     ui->label->setText(text);
 }
 
-void MainWindow2::on_actionShow_additive_bars_triggered()
+void MainWindow2::on_actionFull_screen_triggered()
 {
-    ui->Asin->show();
-    ui->Actg->show();
-    ui->back->show();
-    ui->degrees_2->show();
+    showFullScreen();
 }
-void MainWindow2::on_actionHide_additive_bars_triggered()
+
+void MainWindow2::on_actionStandart_screen_triggered()
 {
-    ui->Asin->hide();
-    ui->Actg->hide();
-    ui->back->hide();
-    ui->degrees_2->hide();
+    showNormal();
 }
